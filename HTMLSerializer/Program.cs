@@ -32,7 +32,7 @@ async Task<string> Load(string url)
     return html;
 }
 
-var html = await Load("https://www.malkabruk.co.il/chat");
+var html = await Load("https://www.malkabruk.co.il/login?app=Chat");
 //var html = File.ReadAllText("JSON files/TextFile1.txt");
 var cleanHtml = new Regex("\\s").Replace(html, " ");
 var tagMatches = Regex.Matches(cleanHtml, @"<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>|([^<]+)").Where(l => !String.IsNullOrWhiteSpace(l.Value));
@@ -66,9 +66,9 @@ for (int i = 2; i < htmlLines.Count(); i++)
         current.InnerHtml += htmlLines[i];
 }
 
-foreach (var item in root.FilterElements("div.modal"))
+foreach (var item in root.FilterElements(".modal-content div"))
 {
-    Console.WriteLine(item.Name + " " + item.Id + " " + item.InnerHtml);
-    foreach(var classes in item.Classes)
+    Console.WriteLine(item.Name + " " + item.Id);
+    foreach (var classes in item.Classes)
         Console.WriteLine(classes);
 }

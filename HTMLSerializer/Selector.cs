@@ -8,28 +8,30 @@ namespace HTMLSerializer
 {
     internal class Selector
     {
-        public string TagName { get; set; } = "";
-        public string Id { get; set; } = "";
+        public string TagName { get; set; }
+        public string Id { get; set; }
         public List<string> Classes { get; set; } = new List<string>();
-        public Selector Parent { get; set; } 
+        public Selector Parent { get; set; }
         public Selector Child { get; set; }
 
         private static Selector SelectorChild(string query)
         {
             Selector current = new Selector();
             int j = 0;
-            if (Char.IsLetter(query[0]))
+            //if (Char.IsLetter(query[0]))
+            //{
+            while (j < query.Length && Char.IsLetter(query[j])) j++;
+            string name = query.Substring(0, j);
+            if (HTMLHelper.Instance.HtmlTags.Contains(name))
+                current.TagName = name;
+            var atributes = query.Substring(j).Split('.');
+            for (int k = 0; k < atributes.Length; k++)
             {
-                while (Char.IsLetter(query[j++])) ;
-                string name = query.Substring(0, j-1);
-                if(HTMLHelper.Instance.HtmlTags.Contains(name))
-                    current.TagName = name;
-                var atributes = query.Substring(j).Split('.');
-                for (int k = 0; k < atributes.Length; k++)
+                if (atributes[k].Length!=0)
                 {
                     if (!atributes[k].Contains('#'))
                         current.Classes.Add(atributes[k]);
-                    else
+                    else if (atributes[k].Contains('#'))
                     {
                         var id = atributes[k].Split('#');
                         if (id.Length > 1)
@@ -42,6 +44,7 @@ namespace HTMLSerializer
                     }
                 }
             }
+            //}
             return current;
         }
         public static Selector ExtractSelector(string query)

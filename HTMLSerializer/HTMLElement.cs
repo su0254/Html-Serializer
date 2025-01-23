@@ -46,10 +46,12 @@ namespace HTMLSerializer
         private bool MatchElements(Selector selector)
         {
             if(selector==null) return false;
-            if (selector.TagName != this.Name)  return false;
-            for (int i = 0;i< this.Classes.Count&&i<selector.Classes.Count;i++)
+            if (!String.IsNullOrEmpty(selector.TagName) && selector.TagName != this.Name) return false;
+            if(selector.Classes.Count != this.Classes.Count&& selector.Classes.Count!=0)
+                return false;
+            for (int i = 0; i<selector.Classes.Count;i++)
                 if (selector.Classes[i] != this.Classes[i]) return false;
-            if (selector.Id != this.Id) return false;
+            if (!String.IsNullOrEmpty(selector.Id) && selector.Id != this.Id) return false;
             return true;
         }
         private void FilterElements(Selector selector, HTMLElement element, HashSet<HTMLElement> matches)
