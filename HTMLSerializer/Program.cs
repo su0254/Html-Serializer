@@ -66,7 +66,7 @@ for (int i = 2; i < htmlLines.Count(); i++)
         current.InnerHtml += htmlLines[i];
 }
 
-foreach (var item in root.FilterElements(".modal-content div"))
+foreach (var item in root.FilterElements(".left-area a"))
 {
     Console.WriteLine(item.Name + " " + item.Id);
     foreach (var classes in item.Classes)
